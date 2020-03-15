@@ -1,54 +1,54 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content"><channel><title>Goran Brlas</title><description>A description of my blog</description><link>https://gbrlas.github.io</link><language>en</language><lastBuildDate>Sun, 15 Mar 2020 11:08:26 +0100</lastBuildDate><pubDate>Sun, 15 Mar 2020 11:08:26 +0100</pubDate><ttl>250</ttl><atom:link href="https://gbrlas.github.io/feed.rss" rel="self" type="application/rss+xml"/><item><guid isPermaLink="true">https://gbrlas.github.io/posts/2-post</guid><title>My second post</title><description>A description of my first post.</description><link>https://gbrlas.github.io/posts/2-post</link><pubDate>Sun, 15 Mar 2020 14:41:00 +0100</pubDate><content:encoded><![CDATA[<h1>My second post</h1><p>My first post's text.</p>]]></content:encoded></item><item><guid isPermaLink="true">https://gbrlas.github.io/posts/3-grouping</guid><title>Collection grouping simplified</title><description>Collection grouping simplified.</description><link>https://gbrlas.github.io/posts/3-grouping</link><pubDate>Sun, 15 Mar 2020 14:41:00 +0100</pubDate><content:encoded><![CDATA[<h1>Collection grouping simplified</h1><p>We've all probably encountered a situation where we needed to group an array of elements by some value, while still keeping the original order of elements. For example, when you need to group people by their age.</p><pre><code class="language-swift">struct Person {
-    let name: String
-    let age: Int
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content"><channel><title>Goran Brlas</title><description>A description of my blog</description><link>https://gbrlas.github.io</link><language>en</language><lastBuildDate>Sun, 15 Mar 2020 11:16:18 +0100</lastBuildDate><pubDate>Sun, 15 Mar 2020 11:16:18 +0100</pubDate><ttl>250</ttl><atom:link href="https://gbrlas.github.io/feed.rss" rel="self" type="application/rss+xml"/><item><guid isPermaLink="true">https://gbrlas.github.io/posts/2-post</guid><title>My second post</title><description>A description of my first post.</description><link>https://gbrlas.github.io/posts/2-post</link><pubDate>Sun, 15 Mar 2020 14:41:00 +0100</pubDate><content:encoded><![CDATA[<h1>My second post</h1><p>My first post's text.</p>]]></content:encoded></item><item><guid isPermaLink="true">https://gbrlas.github.io/posts/3-grouping</guid><title>Collection grouping simplified</title><description>Collection grouping simplified.</description><link>https://gbrlas.github.io/posts/3-grouping</link><pubDate>Sun, 15 Mar 2020 14:41:00 +0100</pubDate><content:encoded><![CDATA[<h1>Collection grouping simplified</h1><p>We've all probably encountered a situation where we needed to group an array of elements by some value, while still keeping the original order of elements. For example, when you need to group people by their age.</p><pre><code><span class="keyword">struct</span> Person {
+    <span class="keyword">let</span> name: <span class="type">String</span>
+    <span class="keyword">let</span> age: <span class="type">Int</span>
 }
 
-let people = [
-    Person(name: "Mark", age: 25),
-    Person(name: "Ann", age: 24),
-    Person(name: "John", age: 25)
+<span class="keyword">let</span> people = [
+    <span class="type">Person</span>(name: <span class="string">"Mark"</span>, age: <span class="number">25</span>),
+    <span class="type">Person</span>(name: <span class="string">"Ann"</span>, age: <span class="number">24</span>),
+    <span class="type">Person</span>(name: <span class="string">"John"</span>, age: <span class="number">25</span>)
 ]
-</code></pre><p>Swift 4.0 introduced the following dictionary functionality which allowed grouping:</p><pre><code class="language-swift">let grouped = Dictionary(grouping: people) { $0.age }.values
+</code></pre><p>Swift 4.0 introduced the following dictionary functionality which allowed grouping:</p><pre><code><span class="keyword">let</span> grouped = <span class="type">Dictionary</span>(grouping: people) { $0.<span class="property">age</span> }.values
 
-/// Result
+<span class="comment">/// Result</span>
 [
     [
-        Person(name: "Ann", age: 24)
+        <span class="type">Person</span>(name: <span class="string">"Ann"</span>, age: <span class="number">24</span>)
     ],
     [
-        Person(name: "Mark", age: 25),
-        Person(name: "John", age: 25)
+        <span class="type">Person</span>(name: <span class="string">"Mark"</span>, age: <span class="number">25</span>),
+        <span class="type">Person</span>(name: <span class="string">"John"</span>, age: <span class="number">25</span>)
     ]
 ]
-</code></pre><p>It looks good, right? Unfortunately, no. Since dictionaries are <em>unordered collections of key-value associations</em>, order of inner arrays might not always be preserved - as seen in the example, array of people aged 24 comes before those aged 25, while it should be reversed since "Mark" is the first person in the starting list.</p><p>Why don't we add some syntactic sugar, as well as make it always sort properly by using the power of swift extensions and generics:</p><pre><code class="language-swift">extension Collection {
+</code></pre><p>It looks good, right? Unfortunately, no. Since dictionaries are <em>unordered collections of key-value associations</em>, order of inner arrays might not always be preserved - as seen in the example, array of people aged 24 comes before those aged 25, while it should be reversed since "Mark" is the first person in the starting list.</p><p>Why don't we add some syntactic sugar, as well as make it always sort properly by using the power of swift extensions and generics:</p><pre><code><span class="keyword">extension</span> <span class="type">Collection</span> {
 
-    func groupBy&lt;GroupingType: Hashable&gt;(key: (Element) -&gt; (GroupingType)) -&gt; [[Element]] {
-        var groups: [GroupingType: [Element]] = [:]
-        var groupsOrder: [GroupingType] = []
+    <span class="keyword">func</span> groupBy&lt;GroupingType: <span class="type">Hashable</span>&gt;(key: (<span class="type">Element</span>) -&gt; (<span class="type">GroupingType</span>)) -&gt; [[<span class="type">Element</span>]] {
+        <span class="keyword">var</span> groups: [<span class="type">GroupingType</span>: [<span class="type">Element</span>]] = [:]
+        <span class="keyword">var</span> groupsOrder: [<span class="type">GroupingType</span>] = []
 
-        forEach { element in
-            let key = key(element)
+        <span class="call">forEach</span> { element <span class="keyword">in
+            let</span> key = <span class="call">key</span>(element)
 
-            if case nil = groups[key]?.append(element) {
+            <span class="keyword">if case nil</span> = groups[key]?.<span class="call">append</span>(element) {
                 groups[key] = [element]
-                groupsOrder.append(key)
+                groupsOrder.<span class="call">append</span>(key)
             }
         }
 
-        return groupsOrder.map { groups[$0] ?? [] }
+        <span class="keyword">return</span> groupsOrder.<span class="call">map</span> { groups[$0] ?? [] }
     }
 
 }
-</code></pre><p>By doing this, our code becomes much cleaner and declarative, as you can see below:</p><pre><code class="language-swift">let grouped = people.groupBy { $0.age }
+</code></pre><p>By doing this, our code becomes much cleaner and declarative, as you can see below:</p><pre><code><span class="keyword">let</span> grouped = people.<span class="call">groupBy</span> { $0.<span class="property">age</span> }
 
-/// Result
+<span class="comment">/// Result</span>
 [
     [
-        Person(name: "Mark", age: 25),
-        Person(name: "John", age: 25)
+        <span class="type">Person</span>(name: <span class="string">"Mark"</span>, age: <span class="number">25</span>),
+        <span class="type">Person</span>(name: <span class="string">"John"</span>, age: <span class="number">25</span>)
     ],
     [
-        Person(name: "Ann", age: 24)
+        <span class="type">Person</span>(name: <span class="string">"Ann"</span>, age: <span class="number">24</span>)
     ]
 ]
 </code></pre><p>Happy grouping!</p>]]></content:encoded></item><item><guid isPermaLink="true">https://gbrlas.github.io/posts/1-post</guid><title>My first post</title><description>A description of my first post.</description><link>https://gbrlas.github.io/posts/1-post</link><pubDate>Sat, 14 Mar 2020 14:41:00 +0100</pubDate><content:encoded><![CDATA[<h1>My first post</h1><p>My first post's text.</p>]]></content:encoded></item></channel></rss>
